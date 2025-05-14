@@ -40,5 +40,22 @@ weather-api/
 
 Accede a `http://localhost:5000/` para verificar que la API está corriendo.
 
+### Ejemplos de consultas
+
+- Clima de Lima, Perú:
+  ```
+  http://localhost:5000/weather?city=Lima,PE
+  ```
+- Clima de Buenos Aires, Argentina:
+  ```
+  http://localhost:5000/weather?city=Buenos%20Aires,AR
+  ```
+- Clima de Cusco, Perú:
+  ```
+  http://localhost:5000/weather?city=Cusco,PE
+  ```
+
+**Nota:** Puedes cambiar el valor de `city` por cualquier ciudad y país (usa el código de país ISO 3166-1 alpha-2).
+
 ## Notas
 - Asegúrate de tener un servidor Redis corriendo localmente o actualiza la variable `REDIS_URL` en `.env`. 
