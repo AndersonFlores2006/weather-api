@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de Weather API</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        h3 {
+            color: #3498db;
+            margin-top: 25px;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #3498db;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #333;
+        }
+        .endpoint {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 5px 5px 0;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 10px;
+            background-color: #61affe;
+            color: white;
+        }
+        .url {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .params table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .params th, .params td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .params th {
+            background-color: #f2f2f2;
+        }
+        .params tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .response {
+            margin-top: 20px;
+        }
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        .tab button.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            animation: fadeEffect 1s;
+        }
+        @keyframes fadeEffect {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        .note {
+            background-color: #fff8e1;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .navigation {
+            position: sticky;
+            top: 20px;
+            float: right;
+            width: 250px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-left: 20px;
+        }
+        .navigation h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .navigation ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .navigation li {
+            margin-bottom: 10px;
+        }
+        .navigation a {
+            text-decoration: none;
+            color: #3498db;
+        }
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+        .main-content {
+            margin-right: 280px;
+        }
+        @media (max-width: 1000px) {
+            .navigation {
+                float: none;
+                width: auto;
+                position: static;
+                margin-left: 0;
+                margin-bottom: 30px;
+            }
+            .main-content {
+                margin-right: 0;
+            }
+        }
+        .btn {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>☁️ Weather API - Documentación</h1>
+        <p>Guía completa para utilizar la API del clima</p>
+    </header>
+
+    <div class="navigation">
+        <h3>Contenido</h3>
+        <ul>
+            <li><a href="#introduccion">Introducción</a></li>
+            <li><a href="#autenticacion">Autenticación</a></li>
+            <li><a href="#endpoints">Endpoints</a>
+                <ul>
+                    <li><a href="#clima-actual">Clima Actual</a></li>
+                    <li><a href="#pronostico">Pronóstico de 5 días</a></li>
+                </ul>
+            </li>
+            <li><a href="#ejemplos">Ejemplos de Uso</a>
+                <ul>
+                    <li><a href="#javascript">JavaScript</a></li>
+                    <li><a href="#python">Python</a></li>
+                    <li><a href="#php">PHP</a></li>
+                    <li><a href="#curl">cURL</a></li>
+                </ul>
+            </li>
+            <li><a href="#respuestas">Estructura de Respuestas</a></li>
+            <li><a href="#errores">Manejo de Errores</a></li>
+            <li><a href="#limitaciones">Limitaciones</a></li>
+        </ul>
+        <a href="/swagger" class="btn">Explorar Swagger UI</a>
+    </div>
+
+    <div class="main-content">
+        <section id="introduccion" class="container">
+            <h2>Introducción</h2>
+            <p>La Weather API es un servicio que proporciona datos meteorológicos actuales y pronósticos para cualquier ciudad del mundo. Esta API utiliza datos de OpenWeatherMap y ofrece las siguientes características:</p>
+            <ul>
+                <li>Datos del clima actual para cualquier ciudad</li>
+                <li>Pronóstico del tiempo para los próximos 5 días</li>
+                <li>Sistema de caché para mejorar el rendimiento</li>
+                <li>Respuestas en formato JSON para fácil integración</li>
+                <li>Soporte para múltiples idiomas (español por defecto)</li>
+            </ul>
+        </section>
+
+        <section id="autenticacion" class="container">
+            <h2>Autenticación</h2>
+            <p>Esta API no requiere autenticación para su uso. Sin embargo, internamente utiliza una clave de API de OpenWeatherMap para obtener los datos meteorológicos.</p>
+            <div class="note">
+                <strong>Nota:</strong> Si estás desplegando esta API en tu propio servidor, necesitarás obtener una clave de API gratuita de <a href="https://openweathermap.org/api" target="_blank">OpenWeatherMap</a> y configurarla en el archivo <code>.env</code>.
+            </div>
+        </section>
+
+        <section id="endpoints" class="container">
+            <h2>Endpoints</h2>
+            
+            <div id="clima-actual" class="endpoint">
+                <h3><span class="method">GET</span> <span class="url">/weather</span></h3>
+                <p>Obtiene información detallada sobre el clima actual en una ciudad específica.</p>
+                
+                <div class="params">
+                    <h4>Parámetros</h4>
+                    <table>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Requerido</th>
+                            <th>Descripción</th>
+                        </tr>
+                        <tr>
+                            <td>city</td>
+                            <td>string</td>
+                            <td>Sí</td>
+                            <td>Nombre de la ciudad (ej. Madrid, Barcelona, New York)</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="response">
+                    <h4>Respuesta Exitosa (200 OK)</h4>
+                    <pre><code>{
+  "source": "api", // o "cache" si los datos provienen de la caché
+  "data": {
+    "coord": {
+      "lon": -3.7026,
+      "lat": 40.4165
+    },
+    "weather": [
+      {
+        "id": 800,
+        "main": "Clear",
+        "description": "cielo claro",
+        "icon": "01d"
+      }
+    ],
+    "base": "stations",
+    "main": {
+      "temp": 22.05,
+      "feels_like": 21.79,
+      "temp_min": 20.05,
+      "temp_max": 23.33,
+      "pressure": 1016,
+      "humidity": 56
+    },
+    "visibility": 10000,
+    "wind": {
+      "speed": 3.09,
+      "deg": 220
+    },
+    "clouds": {
+      "all": 0
+    },
+    "dt": 1621345678,
+    "sys": {
+      "type": 1,
+      "id": 6443,
+      "country": "ES",
+      "sunrise": 1621310400,
+      "sunset": 1621363800
+    },
+    "timezone": 7200,
+    "id": 3117735,
+    "name": "Madrid",
+    "cod": 200
+  }
+}</code></pre>
+                </div>
+            </div>
+            
+            <div id="pronostico" class="endpoint">
+                <h3><span class="method">GET</span> <span class="url">/forecast</span></h3>
+                <p>Obtiene el pronóstico del tiempo para los próximos 5 días con intervalos de 3 horas.</p>
+                
+                <div class="params">
+                    <h4>Parámetros</h4>
+                    <table>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Requerido</th>
+                            <th>Descripción</th>
+                        </tr>
+                        <tr>
+                            <td>city</td>
+                            <td>string</td>
+                            <td>Sí</td>
+                            <td>Nombre de la ciudad (ej. Madrid, Barcelona, New York)</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="response">
+                    <h4>Respuesta Exitosa (200 OK)</h4>
+                    <pre><code>{
+  "source": "api", // o "cache" si los datos provienen de la caché
+  "data": {
+    "cod": "200",
+    "message": 0,
+    "cnt": 40,
+    "list": [
+      {
+        "dt": 1621350000,
+        "main": {
+          "temp": 22.05,
+          "feels_like": 21.79,
+          "temp_min": 20.05,
+          "temp_max": 23.33,
+          "pressure": 1016,
+          "humidity": 56
+        },
+        "weather": [
+          {
+            "id": 800,
+            "main": "Clear",
+            "description": "cielo claro",
+            "icon": "01d"
+          }
+        ],
+        "clouds": {
+          "all": 0
+        },
+        "wind": {
+          "speed": 3.09,
+          "deg": 220
+        },
+        "visibility": 10000,
+        "pop": 0,
+        "sys": {
+          "pod": "d"
+        },
+        "dt_txt": "2021-05-18 15:00:00"
+      },
+      // ... más entradas para cada intervalo de 3 horas ...
+    ],
+    "city": {
+      "id": 3117735,
+      "name": "Madrid",
+      "coord": {
+        "lat": 40.4165,
+        "lon": -3.7026
+      },
+      "country": "ES",
+      "population": 3255944,
+      "timezone": 7200,
+      "sunrise": 1621310400,
+      "sunset": 1621363800
+    }
+  }
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="ejemplos" class="container">
+            <h2>Ejemplos de Uso</h2>
+            
+            <div class="tab">
+                <button class="tablinks active" onclick="openTab(event, 'js')">JavaScript</button>
+                <button class="tablinks" onclick="openTab(event, 'py')">Python</button>
+                <button class="tablinks" onclick="openTab(event, 'php-code')">PHP</button>
+                <button class="tablinks" onclick="openTab(event, 'curl-code')">cURL</button>
+            </div>
+            
+            <div id="js" class="tabcontent" style="display: block;">
+                <h3 id="javascript">JavaScript (Fetch API)</h3>
+                <pre><code>// Obtener clima actual
+async function getWeather(city) {
+  try {
+    const response = await fetch(`http://localhost:5000/weather?city=${encodeURIComponent(city)}`);
+    
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('Clima actual:', data);
+    return data;
+  } catch (error) {
+    console.error('Error al obtener el clima:', error);
+  }
+}
+
+// Obtener pronóstico de 5 días
+async function getForecast(city) {
+  try {
+    const response = await fetch(`http://localhost:5000/forecast?city=${encodeURIComponent(city)}`);
+    
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('Pronóstico de 5 días:', data);
+    return data;
+  } catch (error) {
+    console.error('Error al obtener el pronóstico:', error);
+  }
+}
+
+// Ejemplos de uso
+getWeather('Madrid');
+getForecast('Barcelona');</code></pre>
+            </div>
+            
+            <div id="py" class="tabcontent">
+                <h3 id="python">Python (Requests)</h3>
+                <pre><code>import requests
+
+def get_weather(city):
+    """Obtiene el clima actual para una ciudad"""
+    try:
+        response = requests.get(f"http://localhost:5000/weather?city={city}")
+        response.raise_for_status()  # Lanza excepción si hay error HTTP
+        
+        data = response.json()
+        print(f"Clima actual en {city}:", data)
+        return data
+    except requests.exceptions.RequestException as e:
+        print(f"Error al obtener el clima: {e}")
+        return None
+
+def get_forecast(city):
+    """Obtiene el pronóstico de 5 días para una ciudad"""
+    try:
+        response = requests.get(f"http://localhost:5000/forecast?city={city}")
+        response.raise_for_status()  # Lanza excepción si hay error HTTP
+        
+        data = response.json()
+        print(f"Pronóstico para {city}:", data)
+        return data
+    except requests.exceptions.RequestException as e:
+        print(f"Error al obtener el pronóstico: {e}")
+        return None
+
+# Ejemplos de uso
+get_weather("Madrid")
+get_forecast("Barcelona")</code></pre>
+            </div>
+            
+            <div id="php-code" class="tabcontent">
+                <h3 id="php">PHP (cURL)</h3>
+                <pre><code>&lt;?php
+
+function getWeather($city) {
+    // Inicializar cURL
+    $ch = curl_init();
+    
+    // Configurar opciones de cURL
+    curl_setopt($ch, CURLOPT_URL, "http://localhost:5000/weather?city=" . urlencode($city));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    // Ejecutar la solicitud
+    $response = curl_exec($ch);
+    
+    // Verificar errores
+    if (curl_errno($ch)) {
+        echo 'Error cURL: ' . curl_error($ch);
+        return null;
+    }
+    
+    // Cerrar la sesión cURL
+    curl_close($ch);
+    
+    // Decodificar la respuesta JSON
+    $data = json_decode($response, true);
+    
+    return $data;
+}
+
+function getForecast($city) {
+    // Inicializar cURL
+    $ch = curl_init();
+    
+    // Configurar opciones de cURL
+    curl_setopt($ch, CURLOPT_URL, "http://localhost:5000/forecast?city=" . urlencode($city));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    // Ejecutar la solicitud
+    $response = curl_exec($ch);
+    
+    // Verificar errores
+    if (curl_errno($ch)) {
+        echo 'Error cURL: ' . curl_error($ch);
+        return null;
+    }
+    
+    // Cerrar la sesión cURL
+    curl_close($ch);
+    
+    // Decodificar la respuesta JSON
+    $data = json_decode($response, true);
+    
+    return $data;
+}
+
+// Ejemplos de uso
+$weatherData = getWeather("Madrid");
+echo "Temperatura actual en Madrid: " . $weatherData['data']['main']['temp'] . "°C\n";
+
+$forecastData = getForecast("Barcelona");
+echo "Pronóstico para Barcelona: " . count($forecastData['data']['list']) . " intervalos disponibles\n";
+?&gt;</code></pre>
+            </div>
+            
+            <div id="curl-code" class="tabcontent">
+                <h3 id="curl">cURL (Línea de comandos)</h3>
+                <pre><code># Obtener clima actual
+curl "http://localhost:5000/weather?city=Madrid"
+
+# Obtener pronóstico de 5 días
+curl "http://localhost:5000/forecast?city=Barcelona"</code></pre>
+            </div>
+        </section>
+
+        <section id="respuestas" class="container">
+            <h2>Estructura de Respuestas</h2>
+            
+            <h3>Campos Principales del Clima Actual</h3>
+            <p>La respuesta del endpoint <code>/weather</code> contiene los siguientes campos principales:</p>
+            
+            <table class="params">
+                <tr>
+                    <th>Campo</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td>coord</td>
+                    <td>Coordenadas geográficas (longitud y latitud)</td>
+                </tr>
+                <tr>
+                    <td>weather</td>
+                    <td>Condiciones climáticas (id, descripción, icono)</td>
+                </tr>
+                <tr>
+                    <td>main</td>
+                    <td>Temperatura, presión, humedad, etc.</td>
+                </tr>
+                <tr>
+                    <td>wind</td>
+                    <td>Velocidad y dirección del viento</td>
+                </tr>
+                <tr>
+                    <td>clouds</td>
+                    <td>Nubosidad (en porcentaje)</td>
+                </tr>
+                <tr>
+                    <td>sys</td>
+                    <td>País, amanecer, atardecer</td>
+                </tr>
+                <tr>
+                    <td>name</td>
+                    <td>Nombre de la ciudad</td>
+                </tr>
+            </table>
+            
+            <h3>Campos Principales del Pronóstico</h3>
+            <p>La respuesta del endpoint <code>/forecast</code> contiene los siguientes campos principales:</p>
+            
+            <table class="params">
+                <tr>
+                    <th>Campo</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td>list</td>
+                    <td>Array con pronósticos para cada intervalo de 3 horas</td>
+                </tr>
+                <tr>
+                    <td>city</td>
+                    <td>Información sobre la ciudad (nombre, país, coordenadas)</td>
+                </tr>
+            </table>
+            
+            <p>Cada elemento en el array <code>list</code> contiene:</p>
+            <table class="params">
+                <tr>
+                    <th>Campo</th>
+                    <th>Descripción</th>
+                </tr>
+                <tr>
+                    <td>dt</td>
+                    <td>Timestamp Unix para el pronóstico</td>
+                </tr>
+                <tr>
+                    <td>main</td>
+                    <td>Temperatura, presión, humedad, etc.</td>
+                </tr>
+                <tr>
+                    <td>weather</td>
+                    <td>Condiciones climáticas (id, descripción, icono)</td>
+                </tr>
+                <tr>
+                    <td>clouds</td>
+                    <td>Nubosidad (en porcentaje)</td>
+                </tr>
+                <tr>
+                    <td>wind</td>
+                    <td>Velocidad y dirección del viento</td>
+                </tr>
+                <tr>
+                    <td>dt_txt</td>
+                    <td>Fecha y hora en formato texto</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="errores" class="container">
+            <h2>Manejo de Errores</h2>
+            
+            <p>La API puede devolver los siguientes códigos de error:</p>
+            
+            <table class="params">
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Ejemplo de Respuesta</th>
+                </tr>
+                <tr>
+                    <td>400</td>
+                    <td>Parámetro city requerido</td>
+                    <td><pre><code>{
+  "error": "City parameter is required"
+}</code></pre></td>
+                </tr>
+                <tr>
+                    <td>404</td>
+                    <td>Ciudad no encontrada o error en la API</td>
+                    <td><pre><code>{
+  "error": "City not found or API error"
+}</code></pre></td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="limitaciones" class="container">
+            <h2>Limitaciones</h2>
+            
+            <p>Esta API utiliza OpenWeatherMap como fuente de datos, por lo que está sujeta a las siguientes limitaciones:</p>
+            
+            <ul>
+                <li>El plan gratuito de OpenWeatherMap permite hasta 1,000 llamadas por día</li>
+                <li>Los datos se actualizan cada cierto tiempo, no en tiempo real</li>
+                <li>La precisión de los datos puede variar según la ubicación</li>
+                <li>Las respuestas se almacenan en caché durante 5 minutos para mejorar el rendimiento</li>
+            </ul>
+            
+            <div class="note">
+                <strong>Recomendación:</strong> Para aplicaciones en producción, se recomienda no hacer más de una llamada cada 10 minutos por ubicación para evitar alcanzar el límite diario.
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+</body>
+</html>
