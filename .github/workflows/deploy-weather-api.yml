@@ -33,7 +33,7 @@ jobs:
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy weather-api \
-            --image gcr.io/weather-api-278833805240/weather-api \
+            --image gcr.io/intrepid-period-461115-b6/weather-api \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
