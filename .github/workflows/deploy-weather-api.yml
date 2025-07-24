@@ -37,6 +37,6 @@ jobs:
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
-            --set-env-vars="API_KEY=${{ secrets.API_KEY }}"
+            --set-env-vars="API_KEY=${{ secrets.API_KEY }}" \
             --port 8080 \
             --memory 256Mi
