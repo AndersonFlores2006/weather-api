@@ -31,7 +31,7 @@ def swagger_json():
             "version": "1.0.0"
         },
         "basePath": "/",
-        "schemes": ["http"],
+        "schemes": ["https"],
         "paths": {
             "/weather": {
                 "get": {
