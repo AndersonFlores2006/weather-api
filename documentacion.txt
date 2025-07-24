@@ -1,0 +1,42 @@
+# Documentación de la API - weather-api/app.py
+
+## ¿Qué se hizo en la parte de documentación?
+
+1. **Swagger UI integrado:**
+   - Se utiliza `flask_swagger_ui` para exponer una interfaz Swagger en `/swagger`.
+   - El endpoint `/static/swagger.json` genera y expone la especificación Swagger (OpenAPI 2.0) de la API, describiendo los endpoints `/weather` y `/forecast` con sus parámetros y respuestas.
+   - El blueprint de Swagger UI se registra en la aplicación Flask para que puedas explorar y probar la API desde el navegador.
+
+2. **Dashboard web:**
+   - El endpoint `/dashboard` muestra una página HTML amigable con información sobre los endpoints y ejemplos de uso.
+   - Incluye enlaces directos para probar los endpoints desde el navegador.
+
+3. **Guía de la API:**
+   - El endpoint `/docs` sirve un archivo `docs.html` (no incluido aquí) que puede contener una guía más detallada de la API.
+
+## Pasos para probar la API sin frontend
+
+1. **Usar Swagger UI:**
+   - Accede a `http://<tu-host>:<puerto>/swagger` en tu navegador para explorar y probar los endpoints de la API de forma interactiva.
+
+2. **Probar con curl o Postman:**
+   - Puedes hacer peticiones HTTP directamente a los endpoints:
+     - Clima actual: `GET /weather?city=Ciudad`
+     - Pronóstico: `GET /forecast?city=Ciudad`
+   - Ejemplo con curl:
+     ```bash
+     curl "http://localhost:5000/weather?city=Madrid"
+     curl "http://localhost:5000/forecast?city=Madrid"
+     ```
+
+3. **Ver la documentación técnica:**
+   - Accede a `http://<tu-host>:<puerto>/static/swagger.json` para ver la especificación OpenAPI en formato JSON.
+   - Accede a `/docs` si tienes el archivo `docs.html` para una guía extendida.
+
+## Resumen de endpoints documentados
+
+- `/weather?city=Ciudad` — Devuelve el clima actual de la ciudad.
+- `/forecast?city=Ciudad` — Devuelve el pronóstico de 5 días para la ciudad.
+- `/swagger` — Interfaz Swagger UI para probar la API.
+- `/dashboard` — Dashboard web con ejemplos y enlaces.
+- `/docs` — Guía extendida (si existe el archivo docs.html). 

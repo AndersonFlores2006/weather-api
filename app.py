@@ -4,8 +4,10 @@ import os
 from config import Config
 from cache import get_cache, set_cache
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Configuración de Swagger UI
 SWAGGER_URL = '/swagger'
@@ -201,12 +203,12 @@ def dashboard():
     </head>
     <body>
         <h1>☁️ Weather API Dashboard</h1>
-        
+
         <div class="api-info">
             <p>Bienvenido a la API del clima. Esta API proporciona datos meteorológicos actuales y pronósticos de manera sencilla y eficiente.</p>
             <p>Utiliza caché para mejorar el rendimiento y ofrece datos en formato JSON para fácil integración.</p>
         </div>
-        
+
         <div class="container">
             <div class="endpoint">
                 <h2>🌤️ Clima Actual</h2>
@@ -214,7 +216,7 @@ def dashboard():
                 <p><strong>Endpoint:</strong> /weather?city={nombre_ciudad}</p>
                 <p><strong>Ejemplo:</strong> <a class="example-link" href="/weather?city=Madrid">/weather?city=Madrid</a></p>
             </div>
-            
+
             <div class="endpoint">
                 <h2>📅 Pronóstico de 5 días</h2>
                 <p>Consulta el pronóstico del tiempo para los próximos 5 días con intervalos de 3 horas.</p>
@@ -222,7 +224,7 @@ def dashboard():
                 <p><strong>Ejemplo:</strong> <a class="example-link" href="/forecast?city=Madrid">/forecast?city=Madrid</a></p>
             </div>
         </div>
-        
+
         <div style="display: flex; justify-content: center; gap: 20px;">
             <a href="/swagger" class="btn">📚 Explorar Swagger UI</a>
             <a href="/docs" class="btn" style="background: #27ae60;">📖 Guía Completa de la API</a>
